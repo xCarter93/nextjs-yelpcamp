@@ -19,7 +19,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <div className="m-auto flex min-h-[100vh] min-w-[300px] flex-col justify-between">
+            {children}
+          </div>
+        </body>
       </html>
     </ClerkProvider>
   );

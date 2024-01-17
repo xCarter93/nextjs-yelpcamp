@@ -10,26 +10,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+type geometryType {
+  type        String
+  coordinates Float[]
+}
+
 model Campground {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   price       Float
   location    String
+  geometry    geometryType
   description String?
   image       String?
-  userId      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  authorId    String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  reviews     Review[]
 
   @@map("campgrounds")
 }
 
 model Review {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  rating    Int
-  body      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  rating       Int
+  body         String
+  authorId     String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  campgroundId String     @db.ObjectId
+  campground   Campground @relation(fields: [campgroundId], references: [id], onDelete: Cascade)
 
   @@map("reviews")
 }
+
+// model User {
+//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+//   email     String   @unique
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@map("users")
+// }
